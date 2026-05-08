@@ -7,8 +7,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { tipoContratto, dettagli } = req.body;
-
-  if (!tipoContratto) return res.status(400).json({ error: 'tipoContratto è obbligatorio' });
+  const tipo = tipoContratto || "Contratto generico"
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
       max_tokens: 4000,
       messages: [{
         role: 'user',
-        content: `Sei un esperto legale italiano. Genera un contratto professionale e completo in italiano per: ${tipoContratto}.\n\nDettagli aggiuntivi: ${dettagli || 'nessuno'}\n\nIl contratto deve essere formalmente corretto, includere tutte le clausole standard italiane, e pronto per essere firmato.`
+        content: `Sei un esperto legale italiano. Genera un contratto professionale e completo in italiano per: ${tipo}.\n\nDettagli aggiuntivi: ${dettagli || 'nessuno'}\n\nIl contratto deve essere formalmente corretto, includere tutte le clausole standard italiane, e pronto per essere firmato.`
       }]
     })
   });
