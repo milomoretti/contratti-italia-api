@@ -18,19 +18,16 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages: [{
         role: 'user',
-        content: `Sei un esperto legale italiano. Genera un contratto professionale e completo in italiano per: ${tipo}.\n\nDettagli aggiuntivi: ${dettagli || 'nessuno'}\n\nIl contratto deve essere formalmente corretto, includere tutte le clausole standard italiane, e pronto per essere firmato.`
+        content: `Sei un esperto legale italiano. Genera un contratto professionale e completo in italiano per: ${tipo}.\n\nDettagli aggiuntivi: ${dettagli || 'nessuno'}\n\nIl contratto deve essere formalmente corretto, includere tutte le clausole standard italiane, e pronto per essere firmato.\n\nIMPORTANTE: Non usare markdown, asterischi, hashtag o simboli di formattazione. Scrivi solo testo normale con titoli in MAIUSCOLO.`
       }]
     })
   });
 
   const data = await response.json();
-
   if (!response.ok) return res.status(500).json({ error: data.error?.message || 'Errore API' });
 
-  const contratto = data.content[0].text;
-  res.status(200).json({ contratto });
+  res.status(200).json({ contratto: data.content[0].text });
 }
-Non usare mai markdown, asterischi, hashtag o grassetti. Scrivi solo testo normale.
