@@ -33,3 +33,4 @@ export default async function handler(req, res) {
   const contratto = data.content[0].text;
   res.status(200).json({ contratto });
 }
+Non usare mai markdown, asterischi, hashtag o grassetti. Scrivi solo testo normale.
